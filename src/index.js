@@ -11,11 +11,13 @@ import Header1 from "./templates/header/Header1";
 import Header2 from "./templates/header/Header2";
 import Header3 from "./templates/header/Header3";
 import Header4 from "./templates/header/Header4";
-
-
+import Header5 from "./templates/header/Header5";
+import Header6 from "./templates/header/Header6";
+import URLIndexPage from "./templates/url";
+import URLMainContent from "./templates/url/";
 import Test from "./Test";
 
-const App = () => {
+const App = (props) => {
   return (
 	<Router>
 		<Switch>
@@ -28,9 +30,14 @@ const App = () => {
 					<Header2 />
 					<Header3 />
 					<Header4 />
+					<Header5 />
+					<Header6 />
 				</div>
 			</Route>
 			<Route exact path="/signin" component={SignIn} ></Route>
+			<Route exact path="/url" component={URLIndexPage}>
+			</Route>
+			<Route path="/url/topics/:topic"> <URLIndexPage /> </Route>
 		</Switch>
 	</Router>
   );

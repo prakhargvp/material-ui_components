@@ -1,3 +1,12 @@
 .headers > header {
 	margin-bottom: 30px;
 }
+
+.level-0 a { padding: 8px 16px 8px 16px; }
+.level-1 a { 
+	padding-left: 24px; font-weight: 400; 
+}
+.level-2 a { 
+	padding-left: 38px; 
+	font-weight: 300; 
+}
