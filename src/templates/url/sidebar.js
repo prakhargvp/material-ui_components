@@ -1,64 +1,95 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse'; 
+import Button from '@material-ui/core/Button'; 
+
 
 const useStyles = makeStyles(theme => ({
   nested: {
-    paddingLeft: theme.spacing(4),
+    // paddingLeft: theme.spacing(4),
   },
   listItem: {
-  	paddingTop: '5px',
-  	paddingBottom: '5px',
+  	paddingTop: 0,
+  	paddingBottom: 0,
+  	display: 'block',
   },
+  listItemText: {
+  	justifyContent: 'flex-start',
+  	textTransform: 'capitalize',
+  	letterSpacing: 0
+  }	
 }));
 
-const topics = [
-	{
-		id: 1,
-		name: "Menu 1",
-		order: 1,
-		slug: "menu-1",
-		children: [
-		{ id: 2, name: "sub menu 1 1", slug: "sub-menu1-1", order: 2 },
-		{ id: 3, name: "sub menu 1 2", slug: "sub-menu1-2", order: 3 },
-		{ id: 4, name: "sub menu 1 3", slug: "sub-menu1-3", order: 1 }
-		]
-	},
-	{
-		id: 5,
-		name: "Menu 2",
-		order: 2,
-		slug: "menu-2",
-		children: [
-		{ id: 6, name: "sub menu 2 1", slug: "sub-menu2-1", order: 2 },
-		{ id: 7, name: "sub menu 2 2", slug: "sub-menu2-2", order: 3 },
-		{ id: 8, name: "sub menu 2 3", slug: "sub-menu2-3", order: 1 }
-		]
-	}
-];
 
-function ListItemLink(props) {
-  return <ListItem button component={Link} {...props} />;
+function MountList({topics, open=[], toggleMenu, level=1}) {
+	const classes = useStyles();
+	const { nested,listItem, listItemText } = classes;
+	return (
+		_.map(topics, topic => (
+			<Fragment key={topic.id}>
+				<ListItem disableGutters 
+						  component="li" 
+						  key={topic.id}  
+						  className={listItem}
+				>
+					<Button fullWidth 
+							component={Link} 
+							to={`/url/topics/${topic.slug}`}
+							className={listItemText}
+							onClick={level==1 ? (() => toggleMenu(topic.id)) : (() => {})}
+
+					>
+						{topic.name}
+					</Button>
+					{
+						_.size(topic.children) > 0 && 
+						<Collapse 
+							in={level!=1 || open.includes(topic.id)} 
+							timeout="auto" 
+							unmountOnExit 
+							className={nested}
+						>
+							<List dense disablePadding component="ul" className={'level-'+level}>
+								<MountList topics={topic.children} level={level+1} />
+							</List>
+						</Collapse>
+					}
+				</ListItem>
+			</Fragment>
+		))
+	);
 }
 
-export class sidebar extends Component {
+export default class SideBarNavLinks extends Component{
+	constructor(props) {
+	  super(props);
+	
+	  this.state = {
+	  	open: []
+	  };
+	}
+
+	toggleMenu(id) {
+		this.setState((prevState, props) => {
+			if(prevState.open.includes(id))
+				return {  
+					open: prevState.open.filter(e => e != id)
+				};
+			else 
+				return { open: [...prevState.open, id] }; 
+		});
+	}
+
 	render() {
 		return (
-	 <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List component="nav"> {mountList(topics)} </List>
-      </Drawer>
+		<List dense={true} component="ul" className={"level-0"}> 
+			<MountList topics={this.props.data} open={this.state.open} toggleMenu={this.toggleMenu.bind(this)} />
+	    </List>
 		);
 	}
 }

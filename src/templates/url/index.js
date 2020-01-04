@@ -32,6 +32,9 @@ import ThumbDown from '@material-ui/icons/ThumbDown';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import Box from '@material-ui/core/Box'; 
 import * as _ from 'lodash';
+import SideBarNavLinks from './sidebar';
+import SearchBar from './SearchBar';
+import { topics } from './url';
 
 const drawerWidth = 240;
 
@@ -89,80 +92,9 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-  },
-  nested: {
-    // paddingLeft: theme.spacing(4),
-  },
-  listItem: {
-  	paddingTop: 0,
-  	paddingBottom: 0,
-  	display: 'block',
-  },
-  listItemText: {
-  	justifyContent: 'flex-start',
-  	textTransform: 'capitalize',
-  	letterSpacing: 0
   }
 }));
 
-
-const topics = [
-	{
-		id: 1,
-		name: "Menu 1",
-		order: 1,
-		slug: "menu-1",
-		children: [
-		{ 
-			id: 2, name: "sub menu 1 1", slug: "sub-menu1-1", order: 2,
-			children: [
-				{ id: 9, name: "sub menu 121 ", slug: "sub-menu1-2-1", order: 3 },
-				{ id: 10, name: "sub menu 123 ", slug: "sub-menu1-2-3", order: 1 }
-			]
-		},
-		{ id: 3, name: "sub menu 1 2", slug: "sub-menu1-2", order: 3 },
-		{ id: 4, name: "sub menu 1 3", slug: "sub-menu1-3", order: 1 }
-		]
-	},
-	{
-		id: 5,
-		name: "Menu 2",
-		order: 2,
-		slug: "menu-2",
-		children: [
-		{ id: 6, name: "sub menu 2 1", slug: "sub-menu2-1", order: 2 },
-		{ id: 7, name: "sub menu 2 2", slug: "sub-menu2-2", order: 3 },
-		{ id: 8, name: "sub menu 2 3", slug: "sub-menu2-3", order: 1 }
-		]
-	}
-];
-
-function mountList(topics, level=1) {
-	const classes = useStyles();
-	const { nested,listItem } = classes;
-	return (
-		_.map(topics, topic => (
-			<Fragment key={topic.id}>
-				<ListItem disableGutters 
-						  component="li" 
-						  key={topic.id}  
-						  className={listItem}
-				>
-					<Button fullWidth 
-							component={Link} 
-							to={`/url/topics/${topic.slug}`}
-							className={classes.listItemText}
-					>
-						{topic.name}
-					</Button>
-					{_.size(topic.children) > 0 && <Collapse in={true} timeout="auto" unmountOnExit className={nested}>
-					<List dense disablePadding component="ul" className={'level-'+level}>{mountList(topic.children, level+1)}</List>
-					</Collapse>}
-				</ListItem>
-			</Fragment>
-		))
-	);
-}
 
 function a11yProps(index) {
   return {
@@ -253,7 +185,7 @@ export default function PersistentDrawerLeft() {
           </IconButton>
         </div>
         <Divider />
-        <List dense={true} component="ul" className={"level-0"}> {mountList(topics)} </List>
+        <SideBarNavLinks data={topics} />
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -261,6 +193,7 @@ export default function PersistentDrawerLeft() {
         })}
       >
       	<div className={classes.drawerHeader} />
+      	<SearchBar />
       	<Tabs
           value={value}
           onChange={handleChange}
