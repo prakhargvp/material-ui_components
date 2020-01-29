@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Header from './Header';
-import Sidebar from './Sidebar';
+import SideBar from './SideBar';
+import TopicList from './TopicList';
 import Main from './Main';
 import SearchBar from './SearchBar';
 import { topics } from './url';
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  }
+});
 
 class Home extends Component {
 
@@ -11,25 +19,37 @@ class Home extends Component {
 	  super(props);
 	
 	  this.state = { 
-	  	drawer: false 
+	  	drawerOpen: false,
+	  	drawerWidth: 240
 	  };
 	}
 	handleDrawerOpen() {
-		this.setState({ drawer: true });
+		this.setState({ drawerOpen: true });
 	};
 	handleDrawerClose() {
-	    this.setState({ drawer: false });
+	    this.setState({ drawerOpen: false });
 	};	
 	render() {
-		const { drawer } = this.state;
+		const { drawerOpen, drawerWidth } = this.state;
+		const { classes } = this.props;
+		
 		return (
-			<div>
-				<Header drawerWidth="240" 
-						drawer={drawer} 
-						handleDrawerOpen={this.handleDrawerOpen.bind(this)} 
+			<div className={classes.root}>
+				<Header drawerWidth={drawerWidth} 
+						drawer={drawerOpen}
+						handleDrawerOpen={this.handleDrawerOpen.bind(this)}	
 				/>
-				<Sidebar data={topics} />
-				<Main>
+				<SideBar 
+					drawerWidth={drawerWidth}
+					drawer={drawerOpen}
+					handleDrawerClose={this.handleDrawerClose.bind(this)}
+				>
+					<TopicList data={topics} />
+				</SideBar>
+				<Main
+					drawerWidth={drawerWidth} 
+					drawer={drawerOpen}
+				>
 					<SearchBar />
 				</Main>
 			</div>
@@ -37,4 +57,4 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+export default withStyles(styles)(Home);

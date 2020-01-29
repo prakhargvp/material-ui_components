@@ -36,7 +36,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Brightness4Icon from '@material-ui/icons/Brightness4'; 
 import Brightness7Icon from '@material-ui/icons/Brightness7'; 
 import AppsIcon from '@material-ui/icons/Apps'; 
-import SideBarNavLinks from './Sidebar';
+import TopicList from './TopicList';
 import SearchBar from './SearchBar';
 import { topics } from './url';
 
@@ -215,7 +215,7 @@ const [contentTab, setContentTab] = React.useState(1);
           </IconButton>
         </div>
         <Divider />
-        <SideBarNavLinks data={topics} />
+        <TopicList data={topics} />
       </Drawer>
       <main
         className={clsx(classes.content, {

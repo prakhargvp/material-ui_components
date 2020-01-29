@@ -11,7 +11,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import AppsIcon from '@material-ui/icons/Apps'; 
 import clsx from 'clsx';
 
-const styles = (theme, props) => {
+const styles = theme => {
 	return ({
 	  appBar: {
 	    transition: theme.transitions.create(['margin', 'width'], {
@@ -39,7 +39,6 @@ const styles = (theme, props) => {
 class Header extends Component {
 	render() {
 		const { classes, handleDrawerOpen, drawer: open } = this.props;
-		console.log(open);
 		return (
 		<AppBar
 	        position="fixed"
