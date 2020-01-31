@@ -14,7 +14,6 @@ import Header4 from "./templates/header/Header4";
 import Header5 from "./templates/header/Header5";
 import Header6 from "./templates/header/Header6";
 import URLIndexPage from "./templates/url";
-import URLMainContent from "./templates/url/App";
 import Test from "./Test";
 
 const App = (props) => {
@@ -35,8 +34,7 @@ const App = (props) => {
 				</div>
 			</Route>
 			<Route exact path="/signin" component={SignIn} ></Route>
-			<Route exact path="/urltest" component={URLIndexPage}></Route>
-			<Route exact path="/url" component={URLMainContent}></Route>
+			<Route exact path="/url" component={URLIndexPage}></Route>
 			<Route path="/url/topics/:topic"> <URLIndexPage /> </Route>
 		</Switch>
 	</Router>

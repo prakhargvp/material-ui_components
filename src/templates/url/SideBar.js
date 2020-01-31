@@ -27,7 +27,6 @@ const styles = theme => ({
 
 class SideBar extends Component {
 	render() {
-		console.log(this.props);
 		const { 
 			classes, 
 			handleDrawerClose, 

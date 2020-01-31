@@ -6,6 +6,7 @@ import TopicList from './TopicList';
 import Main from './Main';
 import SearchBar from './SearchBar';
 import { topics } from './url';
+import ContentTab from './ContentTab';
 
 const styles = theme => ({
   root: {
@@ -51,6 +52,7 @@ class Home extends Component {
 					drawer={drawerOpen}
 				>
 					<SearchBar />
+					<ContentTab />
 				</Main>
 			</div>
 		);
